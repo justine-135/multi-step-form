@@ -1,0 +1,56 @@
+@use "variables" as v;
+
+.aside-steps-container {
+  height: 568px;
+  max-width: 274px;
+  width: 100%;
+  background: url("../images/bg-sidebar-desktop.svg");
+  background-position: center;
+  border-radius: 15px;
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    margin: 40px 0 0 30px;
+    li {
+      display: flex;
+      gap: 10px;
+
+      .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        height: 35px;
+        width: 35px;
+        border-radius: 50%;
+        border: 1px solid white;
+        color: white;
+
+        &.selected {
+          background-color: v.$selectedBg;
+          color: v.$selectedColor;
+          border: 1px solid v.$selectedBg;
+        }
+      }
+
+      .step-name {
+        display: flex;
+        flex-direction: column;
+
+        span {
+          display: block;
+          text-transform: uppercase;
+
+          &:nth-child(1) {
+            color: v.$lightGray;
+          }
+          &:nth-child(2) {
+            color: white;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+  }
+}

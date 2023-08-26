@@ -1,0 +1,85 @@
+@use "variables" as v;
+
+.section-form {
+  // background-color: lightblue;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 5% 8% 10px 8%;
+  width: 100%;
+  // background-color: white;
+
+  .header-text {
+    font-size: 1.5rem;
+    color: v.$marineBlue;
+    margin-bottom: 5px;
+  }
+
+  .info-text {
+    color: v.$coolGray;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 40px;
+
+    .label-alert-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+
+      .field-alert {
+        color: v.$straberryRed;
+      }
+    }
+
+    .input-label {
+      color: v.$marineBlue;
+      // font-weight: 500;
+    }
+
+    .input-text {
+      padding: 15px;
+      border: 1px solid v.$lightGray;
+      border-radius: 10px;
+      width: 100%;
+      color: v.$marineBlue;
+      font-weight: 500;
+    }
+  }
+
+  .navigate-btn-container {
+    display: flex;
+    margin-top: auto;
+    width: 100%;
+    flex-direction: row-reverse;
+
+    button {
+      &:nth-child(1) {
+        margin-left: auto;
+        background-color: v.$marineBlue;
+        border: none;
+        padding: 16px;
+        color: white;
+        font-weight: 700;
+        color: white;
+        border-radius: 10px;
+      }
+      &:nth-child(2) {
+        margin-right: auto;
+        border: none;
+        padding: 16px;
+        color: white;
+        font-weight: 700;
+        color: v.$coolGray;
+        border-radius: 10px;
+        background-color: white;
+        &:hover {
+          color: v.$marineBlue;
+        }
+      }
+    }
+  }
+}
