@@ -52,7 +52,7 @@ const Plan = ({ setSteps, data, setData, steps }) => {
             })
           }
         >
-          <div className={data.type === "monthly" && "toggle"}></div>
+          <div className={data.type === "monthly" ? "" : "toggle"}></div>
         </button>
         <span className={data.type !== "monthly" ? "selected" : ""}>
           Yearly
