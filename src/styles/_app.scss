@@ -5,14 +5,14 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  // background-color: v.$bg;
+  background-color: v.$bg;
   .multi-step-forms-container {
-    // margin: 10px;
+    margin: 10px;
     display: flex;
     height: 100%;
     width: 80%;
     background-color: white;
     padding: 10px;
-    // border-radius: 12px;
+    border-radius: 12px;
   }
 }
