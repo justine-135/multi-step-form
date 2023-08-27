@@ -5,9 +5,8 @@ const AddOns = ({ setSteps, data, setData, steps }) => {
     const newSelectedAddon = data.addons.map((addon) => {
       if (selectedAddon.id === addon.id) {
         return { ...addon, selected: addon.selected ? false : true };
-      } else {
-        return { ...addon, selected: false };
       }
+      return addon;
     });
     setData({
       ...data,
