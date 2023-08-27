@@ -27,7 +27,7 @@ const Fields = ({
         {alert && <p className="field-alert">This text is required.</p>}
       </div>
       <input
-        className="input-text"
+        className={`input-text ${alert && "alert"}`}
         type={type}
         name={id}
         id={id}
