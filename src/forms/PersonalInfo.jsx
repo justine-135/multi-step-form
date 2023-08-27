@@ -89,6 +89,7 @@ const PersonalInfo = ({ setSteps, data, setData, steps }) => {
         setAlert={setAlert}
         setSteps={setSteps}
         steps={steps}
+        page="0"
       />
     </section>
   );
