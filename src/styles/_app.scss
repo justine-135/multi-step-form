@@ -6,13 +6,28 @@
   justify-content: center;
   min-height: 100vh;
   background-color: v.$bg;
+
+  @media screen and (max-width: 600px) {
+    justify-content: start;
+    align-items: start;
+  }
+
   .multi-step-forms-container {
-    margin: 10px;
     display: flex;
+    margin: 10px;
     height: 100%;
     width: 80%;
     background-color: white;
     padding: 10px;
     border-radius: 12px;
+
+    @media screen and (max-width: 600px) {
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      background-color: v.$bg;
+    }
   }
 }

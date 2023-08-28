@@ -1,17 +1,37 @@
 @use "variables" as v;
 
 .aside-steps-container {
-  height: 568px;
   max-width: 274px;
   width: 100%;
   background: url("../images/bg-sidebar-desktop.svg");
   background-position: center;
   border-radius: 15px;
+  height: 568px;
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    justify-content: center;
+    height: 173px;
+    max-width: 100%;
+    background: url("../images/bg-sidebar-mobile.svg");
+    background-size: cover;
+    border-radius: 0;
+  }
+
   ul {
     display: flex;
     flex-direction: column;
     gap: 30px;
     margin: 40px 0 0 30px;
+
+    @media screen and (max-width: 600px) {
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 40px 0;
+      width: 70%;
+      gap: 0;
+    }
+
     li {
       display: flex;
       gap: 10px;
@@ -37,6 +57,10 @@
       .step-name {
         display: flex;
         flex-direction: column;
+
+        @media screen and (max-width: 600px) {
+          display: none;
+        }
 
         span {
           display: block;
