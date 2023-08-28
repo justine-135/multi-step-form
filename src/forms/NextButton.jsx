@@ -35,7 +35,7 @@ const NextButton = (props) => {
           email: null,
           phone: null,
         });
-        // props.setSteps((n) => n + 1);
+        props.setSteps((n) => n + 1);
       }
     } else if (props.page == 1) {
       props.data.plans.map((plan) => {
