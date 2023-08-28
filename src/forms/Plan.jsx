@@ -31,11 +31,13 @@ const Plan = ({ setSteps, data, setData, steps }) => {
               }}
             >
               <img src={require(`../images/${plan.img}`)} alt="" />
-              <h4>{plan.name}</h4>
-              <span>
-                ${data.type === "monthly" ? plan.mo : plan.yr}/
-                {data.type === "monthly" ? "mo" : "yr"}
-              </span>
+              <div className="plan-info">
+                <h4>{plan.name}</h4>
+                <span>
+                  ${data.type === "monthly" ? plan.mo : plan.yr}/
+                  {data.type === "monthly" ? "mo" : "yr"}
+                </span>
+              </div>
             </button>
           );
         })}
