@@ -1,6 +1,10 @@
 import React from "react";
 
 const NextButton = (props) => {
+  const validateEmail = (email) => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    return emailPattern.test(email);
+  };
   const handleIncreaseSteps = () => {
     if (props.page == 0) {
       if (props.data.name === "") {
@@ -9,7 +13,7 @@ const NextButton = (props) => {
           name: true,
         }));
       }
-      if (props.data.email === "") {
+      if (props.data.email === "" || !validateEmail(props.data.email)) {
         props.setAlert((prevAlert) => ({
           ...prevAlert,
           email: true,
@@ -31,7 +35,7 @@ const NextButton = (props) => {
           email: null,
           phone: null,
         });
-        props.setSteps((n) => n + 1);
+        // props.setSteps((n) => n + 1);
       }
     } else if (props.page == 1) {
       props.data.plans.map((plan) => {
@@ -42,7 +46,7 @@ const NextButton = (props) => {
     } else if (props.page == 2) {
       props.setSteps((n) => n + 1);
     } else {
-      console.log("HEy");
+      console.log("No more page.");
     }
   };
   return (
