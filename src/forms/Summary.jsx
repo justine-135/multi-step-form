@@ -1,16 +1,15 @@
-import NextButton from "./NextButton";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import NextButton from "./NextButton";
 
-const Summary = ({ setSteps, data, setData, steps }) => {
+const Summary = ({ setSteps, steps }) => {
   const [totalCost, setTotalCost] = useState(0);
-  const selectedPlan = data.plans.filter((plan) => plan.selected);
-  const selectedAddons = data.addons.filter((addon) => addon.selected);
+  const summary = useSelector((state) => state.form);
 
-  let planCost =
-    data.type === "monthly" ? selectedPlan[0].mo : selectedPlan[0].yr;
+  let planCost = summary.plan.value;
   let addonsCost = 0;
-  selectedAddons.map((addon, key) => {
-    addonsCost += data.type === "monthly" ? addon.mo : addon.yr;
+  summary.addons.map((addon) => {
+    addonsCost += addon.value;
   });
 
   useEffect(() => {
@@ -27,29 +26,26 @@ const Summary = ({ setSteps, data, setData, steps }) => {
         <div className="plan-container">
           <div className="plan-name">
             <h5>
-              {selectedPlan[0].name} ({data.type})
+              {summary.plan.name} ({summary.type ? "Monthly" : "Yearly"})
             </h5>
             <button onClick={() => setSteps(1)}>Change</button>
           </div>
           <p>
             $
-            {data.type === "monthly"
-              ? `${selectedPlan[0].mo}/mo`
-              : `${selectedPlan[0].yr}/yr`}
+            {summary.type
+              ? `${summary.plan.value}/mo`
+              : `${summary.plan.value}/yr`}
           </p>
         </div>
-        {selectedAddons && (
+        {summary.addons && (
           <ul className="addon-container">
-            {selectedAddons.map((addon, key) => {
+            {summary.addons.map((addon, key) => {
               return (
-                <li key={key}>
+                <li key={addon.id}>
                   <p>{addon.name}</p>
                   <p>
-                    {" "}
                     +$
-                    {data.type === "monthly"
-                      ? `${addon.mo}/mo`
-                      : `${addon.yr}/yr`}
+                    {summary.type ? `${addon.value}/mo` : `${addon.value}/yr`}
                   </p>
                 </li>
               );
@@ -58,12 +54,12 @@ const Summary = ({ setSteps, data, setData, steps }) => {
         )}
       </div>
       <div className="total-container">
-        <p>Total per ({data.type === "monthly" ? "month" : "year"})</p>
+        <p>Total per ({summary.type ? "month" : "year"})</p>
         <p>
-          +${totalCost}/{data.type === "monthly" ? "mo" : "yr"}
+          +${totalCost}/{summary.type ? "mo" : "yr"}
         </p>
       </div>
-      <NextButton data={data} setSteps={setSteps} steps={steps} page="2" />
+      <NextButton setSteps={setSteps} steps={steps} page="2" />
     </section>
   );
 };

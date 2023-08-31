@@ -1,19 +1,37 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import NextButton from "./NextButton";
+import initialData from "../app/initialData";
 
-const AddOns = ({ setSteps, data, setData, steps }) => {
+const AddOns = ({ setSteps, steps }) => {
+  const addonsSelector = useSelector((state) => state.form);
+
+  const [data] = useState(initialData);
+
+  const [addons, setAddons] = useState(addonsSelector.addons);
+
   const handleCheckBox = (selectedAddon) => {
-    const newSelectedAddon = data.addons.map((addon) => {
-      if (selectedAddon.id === addon.id) {
-        return { ...addon, selected: addon.selected ? false : true };
-      }
-      return addon;
-    });
-    setData({
-      ...data,
-      addons: newSelectedAddon,
-    });
+    console.log(selectedAddon);
+    if (!addons.some((addon) => addon.id === selectedAddon.id)) {
+      setAddons((prevAddon) => [
+        ...prevAddon,
+        {
+          id: selectedAddon.id,
+          name: selectedAddon.name,
+          description: selectedAddon.description,
+          value: addonsSelector.type ? selectedAddon.mo : selectedAddon.yr,
+        },
+      ]);
+    } else {
+      setAddons((prevItems) =>
+        prevItems.filter((addon) => addon.id !== selectedAddon.id)
+      );
+    }
   };
 
+  const handleSelectedAddon = (id) => {
+    return addons.some((addon) => addon.id === id);
+  };
   return (
     <section className="section-form">
       <h2 className="header-text">Pick add-ons</h2>
@@ -23,12 +41,15 @@ const AddOns = ({ setSteps, data, setData, steps }) => {
           {data.addons ? (
             data.addons.map((addon, key) => {
               return (
-                <li key={key} className={addon.selected && "selected"}>
+                <li
+                  key={addon.id}
+                  className={handleSelectedAddon(addon.id) && "selected"}
+                >
                   <button
-                    className={addon.selected && "selected"}
+                    className={handleSelectedAddon(addon.id) && "selected"}
                     onClick={() => handleCheckBox(addon)}
                   >
-                    {addon.selected && (
+                    {handleSelectedAddon(addon.id) && (
                       <img src={require(`../images/${addon.img}`)} alt="" />
                     )}
                   </button>
@@ -38,9 +59,7 @@ const AddOns = ({ setSteps, data, setData, steps }) => {
                   </div>
                   <div className="addon-cost">
                     +$
-                    {data.type === "monthly"
-                      ? `${addon.mo}/mo`
-                      : `${addon.yr}/yr`}
+                    {addonsSelector.type ? `${addon.mo}/mo` : `${addon.yr}/yr`}
                   </div>
                 </li>
               );
@@ -50,7 +69,7 @@ const AddOns = ({ setSteps, data, setData, steps }) => {
           )}
         </ul>
       </div>
-      <NextButton data={data} setSteps={setSteps} steps={steps} page="2" />
+      <NextButton setSteps={setSteps} steps={steps} addons={addons} page="2" />
     </section>
   );
 };

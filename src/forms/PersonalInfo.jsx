@@ -1,22 +1,12 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import NextButton from "./NextButton";
 
-const Fields = ({
-  label,
-  type,
-  id,
-  placeholder,
-  data,
-  setData,
-  alert,
-  setAlert,
-}) => {
+const Fields = ({ label, type, id, placeholder, value, setForm }) => {
   const handleFieldChange = (e) => {
-    setData({
-      ...data,
-      [id]: e.target.value,
+    setForm(() => {
+      return { ...value, [id]: e.target.value };
     });
-    setAlert({});
   };
   return (
     <div>
@@ -24,26 +14,28 @@ const Fields = ({
         <label className="input-label" htmlFor={id}>
           {label}
         </label>
-        {alert && <p className="field-alert">This text is required.</p>}
+        {/* {alert && <p className="field-alert">This text is required.</p>} */}
       </div>
       <input
-        className={`input-text ${alert && "alert"}`}
+        className={`input-text `}
         type={type}
         name={id}
         id={id}
         placeholder={placeholder}
-        value={data[id]}
+        value={value[id]}
         onChange={handleFieldChange}
       />
     </div>
   );
 };
 
-const PersonalInfo = ({ setSteps, data, setData, steps }) => {
-  const [alert, setAlert] = useState({
-    name: null,
-    email: null,
-    phone: null,
+const PersonalInfo = ({ setSteps, steps }) => {
+  const personalInfo = useSelector((state) => state.form.personalInfo);
+
+  const [form, setForm] = useState({
+    name: personalInfo.name,
+    email: personalInfo.email,
+    phone: personalInfo.phone,
   });
 
   return (
@@ -58,39 +50,27 @@ const PersonalInfo = ({ setSteps, data, setData, steps }) => {
           type="text"
           id="name"
           placeholder="e.g. Stephen King"
-          data={data}
-          setData={setData}
-          alert={alert.name}
-          setAlert={setAlert}
+          value={form}
+          setForm={setForm}
         />
         <Fields
           label="Email"
           type="email"
           id="email"
           placeholder="e.g. stephenking@lorem.com"
-          data={data}
-          setData={setData}
-          alert={alert.email}
-          setAlert={setAlert}
+          value={form}
+          setForm={setForm}
         />
         <Fields
           label="Phone"
           type="text"
           id="phone"
           placeholder="e.g. + 1 234 567 890"
-          data={data}
-          setData={setData}
-          alert={alert.phone}
-          setAlert={setAlert}
+          value={form}
+          setForm={setForm}
         />
       </form>
-      <NextButton
-        data={data}
-        setAlert={setAlert}
-        setSteps={setSteps}
-        steps={steps}
-        page="0"
-      />
+      <NextButton setSteps={setSteps} steps={steps} form={form} page="0" />
     </section>
   );
 };

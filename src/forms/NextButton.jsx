@@ -1,49 +1,36 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { step1, step2, step3 } from "../features/form/formSlice";
 
 const NextButton = (props) => {
+  const dispatch = useDispatch();
+
   const validateEmail = (email) => {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     return emailPattern.test(email);
   };
+
   const handleIncreaseSteps = () => {
     if (props.page == 0) {
-      if (props.data.name === "") {
-        props.setAlert((prevAlert) => ({
-          ...prevAlert,
-          name: true,
-        }));
-      }
-      if (props.data.email === "" || !validateEmail(props.data.email)) {
-        props.setAlert((prevAlert) => ({
-          ...prevAlert,
-          email: true,
-        }));
-      }
-      if (props.data.phone === "") {
-        props.setAlert((prevAlert) => ({
-          ...prevAlert,
-          phone: true,
-        }));
-      }
-      if (
-        props.data.name !== "" &&
-        props.data.email !== "" &&
-        props.data.phone
-      ) {
-        props.setAlert({
-          name: null,
-          email: null,
-          phone: null,
-        });
-        props.setSteps((n) => n + 1);
-      }
+      props.setSteps((n) => n + 1);
+      dispatch(
+        step1({
+          name: props.form.name,
+          email: props.form.email,
+          phone: props.form.phone,
+        })
+      );
     } else if (props.page == 1) {
-      props.data.plans.map((plan) => {
-        if (plan.selected) {
-          props.setSteps((n) => n + 1);
-        }
-      });
+      dispatch(
+        step2({
+          id: props.plan.id,
+          name: props.plan.name,
+          value: props.plan.value,
+        })
+      );
+      props.setSteps((n) => n + 1);
     } else if (props.page == 2) {
+      dispatch(step3(props.addons));
       props.setSteps((n) => n + 1);
     } else {
       console.log("No more page.");

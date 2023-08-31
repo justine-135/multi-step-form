@@ -1,19 +1,34 @@
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { type, step3 } from "../features/form/formSlice";
 import NextButton from "./NextButton";
+import initialData from "../app/initialData";
 
-const Plan = ({ setSteps, data, setData, steps }) => {
+const Plan = ({ setSteps, steps }) => {
+  const dispatch = useDispatch();
+  const planSelector = useSelector((state) => state.form);
+  const [data] = useState(initialData);
+  const [plan, setPlan] = useState({
+    id: planSelector.plan.id,
+    name: planSelector.plan.name,
+    value: planSelector.plan.value,
+  });
+  const [monthly, setMonthly] = useState(planSelector.type);
+  const [id, setId] = useState(plan.id);
+
+  useEffect(() => {
+    setId(plan.id);
+  }, [plan]);
+
   const handleSelectPlan = (selectedPlan) => {
-    const newSelectedPlan = data.plans.map((plan) => {
-      if (selectedPlan.id === plan.id) {
-        return { ...plan, selected: plan.selected ? false : true };
-      } else {
-        return { ...plan, selected: false };
-      }
-    });
-    setData({
-      ...data,
-      plans: newSelectedPlan,
+    setPlan({
+      id: selectedPlan.id,
+      name: selectedPlan.name,
+      value: monthly ? selectedPlan.mo : selectedPlan.yr,
+      type: monthly,
     });
   };
+
   return (
     <section className="section-form">
       <h2 className="header-text">Select your plan</h2>
@@ -24,7 +39,7 @@ const Plan = ({ setSteps, data, setData, steps }) => {
         {data.plans.map((plan, key) => {
           return (
             <button
-              className={`plan-btn ${plan.selected ? "selected" : ""}`}
+              className={`plan-btn ${plan.id === id ? "selected" : ""}`}
               key={key}
               onClick={() => {
                 handleSelectPlan(plan);
@@ -34,8 +49,7 @@ const Plan = ({ setSteps, data, setData, steps }) => {
               <div className="plan-info">
                 <h4>{plan.name}</h4>
                 <span>
-                  ${data.type === "monthly" ? plan.mo : plan.yr}/
-                  {data.type === "monthly" ? "mo" : "yr"}
+                  ${monthly ? plan.mo : plan.yr}/{monthly ? "mo" : "yr"}
                 </span>
               </div>
             </button>
@@ -43,24 +57,31 @@ const Plan = ({ setSteps, data, setData, steps }) => {
         })}
       </div>
       <div className="toggle-container">
-        <span className={data.type === "monthly" ? "selected" : ""}>
-          Monthly
-        </span>
+        <span className={monthly ? "selected" : ""}>Monthly</span>
         <button
-          onClick={() =>
-            setData({
-              ...data,
-              type: data.type === "monthly" ? "yearly" : "monthly",
-            })
-          }
+          onClick={() => {
+            setMonthly(!monthly);
+            dispatch(type(!monthly));
+            dispatch(step3([]));
+            setPlan({
+              id: null,
+              name: "",
+              value: 0,
+              type: "",
+            });
+          }}
         >
-          <div className={data.type === "monthly" ? "" : "toggle"}></div>
+          <div className={monthly ? "" : "toggle"}></div>
         </button>
-        <span className={data.type !== "monthly" ? "selected" : ""}>
-          Yearly
-        </span>
+        <span className={!monthly ? "selected" : ""}>Yearly</span>
       </div>
-      <NextButton data={data} setSteps={setSteps} steps={steps} page="1" />
+      <NextButton
+        plan={plan}
+        setSteps={setSteps}
+        steps={steps}
+        monthly={monthly}
+        page="1"
+      />
     </section>
   );
 };
